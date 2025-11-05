@@ -9,11 +9,11 @@ import Logo4HexagonLines from '../components/logos/Logo4HexagonLines';
 import Logo5CyberLines from '../components/logos/Logo5CyberLines';
 
 const logos = [
-  { id: 1, name: 'Pulsujące Pierścienie', component: Logo1PulsingRings },
-  { id: 2, name: 'Linie Hero', component: Logo2HeroLines },
+  { id: 1, name: 'Pierścienie', component: Logo1PulsingRings },
+  { id: 2, name: 'Linie werdykalne', component: Logo2HeroLines },
   { id: 3, name: 'Przekątne Linie', component: Logo3DiagonalSweep },
-  { id: 4, name: 'Sieć Heksagonalna', component: Logo4HexagonLines },
-  { id: 5, name: 'Siatka Cyber', component: Logo5CyberLines },
+  { id: 4, name: 'Hexagon', component: Logo4HexagonLines },
+  { id: 5, name: 'Siatka', component: Logo5CyberLines },
 ];
 
 export default function LogosShowcase() {

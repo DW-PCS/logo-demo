@@ -48,7 +48,11 @@ export default function Logo4HexagonLines() {
           >
             {/* Hexagon */}
             <motion.path
-              d={`M ${hexPoints.map((p, i) => `${p.x * scale},${p.y * scale} ${i < hexPoints.length - 1 ? 'L' : 'Z'}`).join(' ')}`}
+              d={`M ${hexPoints
+                .map(
+                  (p, i) => `${p.x * scale},${p.y * scale} ${i < hexPoints.length - 1 ? 'L' : 'Z'}`
+                )
+                .join(' ')}`}
               fill="none"
               stroke="#06b6d4"
               strokeWidth="2"
@@ -105,7 +109,9 @@ export default function Logo4HexagonLines() {
           transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
         >
           <path
-            d={`M ${hexPoints.map((p, i) => `${p.x * 2},${p.y * 2} ${i < hexPoints.length - 1 ? 'L' : 'Z'}`).join(' ')}`}
+            d={`M ${hexPoints
+              .map((p, i) => `${p.x * 2},${p.y * 2} ${i < hexPoints.length - 1 ? 'L' : 'Z'}`)
+              .join(' ')}`}
             fill="none"
             stroke="#06b6d4"
             strokeWidth="1"
@@ -153,7 +159,8 @@ export default function Logo4HexagonLines() {
             transition={{ duration: 2, repeat: Infinity }}
             className="relative p-12 bg-slate-900/90 backdrop-blur-md"
             style={{
-              clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+              clipPath:
+                'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
             }}
           >
             <Image
@@ -226,7 +233,7 @@ export default function Logo4HexagonLines() {
         transition={{ delay: 1.5 }}
         className="absolute bottom-20 text-center"
       >
-        <h2 className="text-4xl font-bold text-white mb-2">Sieć Heksagonalna</h2>
+        <h2 className="text-4xl font-bold text-white mb-2">Hexagon</h2>
         <p className="text-cyan-300">Geometryczne linie heksagonalne ze strumieniami danych</p>
       </motion.div>
     </div>
