@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { gsap } from 'gsap';
+import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 
 export default function Logo4AnimatedLines() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -67,7 +67,7 @@ export default function Logo4AnimatedLines() {
   // Generate geometric pattern points
   const centerX = 400;
   const centerY = 400;
-  const points = [];
+  const points = [] as { x: number; y: number }[];
   for (let i = 0; i < 12; i++) {
     const angle = (Math.PI * 2 * i) / 12;
     const radius = 300;
@@ -106,11 +106,7 @@ export default function Logo4AnimatedLines() {
       </div>
 
       {/* SVG lines container */}
-      <svg
-        className="absolute"
-        style={{ width: '800px', height: '800px' }}
-        viewBox="0 0 800 800"
-      >
+      <svg className="absolute" style={{ width: '800px', height: '800px' }} viewBox="0 0 800 800">
         <defs>
           <linearGradient id="lineGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#8b5cf6" />
@@ -131,7 +127,7 @@ export default function Logo4AnimatedLines() {
         {points.map((point, index) => (
           <line
             key={`center-${index}`}
-            ref={(el) => {
+            ref={el => {
               linesRef.current[index] = el;
             }}
             x1={centerX}
@@ -152,7 +148,7 @@ export default function Logo4AnimatedLines() {
           return (
             <line
               key={`connect-${index}`}
-              ref={(el) => {
+              ref={el => {
                 linesRef.current[points.length + index] = el;
               }}
               x1={point.x}
@@ -179,12 +175,7 @@ export default function Logo4AnimatedLines() {
               filter="url(#glow)"
               opacity="0.8"
             />
-            <circle
-              cx={point.x}
-              cy={point.y}
-              r="4"
-              fill="#a78bfa"
-            />
+            <circle cx={point.x} cy={point.y} r="4" fill="#a78bfa" />
           </g>
         ))}
       </svg>
