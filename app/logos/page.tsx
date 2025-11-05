@@ -2,18 +2,18 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import Logo1PulsingRings from './components/logos/Logo1PulsingRings';
-import Logo2HeroLines from './components/logos/Logo2HeroLines';
-import Logo3DiagonalSweep from './components/logos/Logo3DiagonalSweep';
-import Logo4HexagonLines from './components/logos/Logo4HexagonLines';
-import Logo5CyberLines from './components/logos/Logo5CyberLines';
+import Logo1PulsingRings from '../components/logos/Logo1PulsingRings';
+import Logo2HeroLines from '../components/logos/Logo2HeroLines';
+import Logo3DiagonalSweep from '../components/logos/Logo3DiagonalSweep';
+import Logo4HexagonLines from '../components/logos/Logo4HexagonLines';
+import Logo5CyberLines from '../components/logos/Logo5CyberLines';
 
 const logos = [
-  { id: 1, name: 'Pulsing Rings', component: Logo1PulsingRings },
-  { id: 2, name: 'Hero Lines', component: Logo2HeroLines },
-  { id: 3, name: 'Diagonal Sweep', component: Logo3DiagonalSweep },
-  { id: 4, name: 'Hexagon Network', component: Logo4HexagonLines },
-  { id: 5, name: 'Cyber Grid', component: Logo5CyberLines },
+  { id: 1, name: 'Pulsujące Pierścienie', component: Logo1PulsingRings },
+  { id: 2, name: 'Linie Hero', component: Logo2HeroLines },
+  { id: 3, name: 'Przekątne Linie', component: Logo3DiagonalSweep },
+  { id: 4, name: 'Sieć Heksagonalna', component: Logo4HexagonLines },
+  { id: 5, name: 'Siatka Cyber', component: Logo5CyberLines },
 ];
 
 export default function LogosShowcase() {
@@ -50,12 +50,7 @@ export default function LogosShowcase() {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
@@ -128,8 +123,8 @@ export default function LogosShowcase() {
               Innowacyjne Rozwiązania
             </h1>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua.
+              Dostarczamy nowoczesne rozwiązania technologiczne, które przekształcają Twój biznes
+              i prowadzą do sukcesu w erze cyfrowej.
             </p>
           </motion.div>
 
@@ -139,17 +134,17 @@ export default function LogosShowcase() {
               {
                 title: 'Technologia',
                 description:
-                  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                  'Wykorzystujemy najnowsze technologie i narzędzia, aby dostarczać rozwiązania na najwyższym poziomie.',
               },
               {
                 title: 'Innowacja',
                 description:
-                  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                  'Ciągle poszukujemy nowych sposobów rozwiązywania problemów i ulepszania procesów biznesowych.',
               },
               {
                 title: 'Jakość',
                 description:
-                  'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                  'Każdy projekt realizujemy z najwyższą starannością, dbając o każdy szczegół i satysfakcję klienta.',
               },
             ].map((feature, index) => (
               <motion.div
@@ -178,13 +173,13 @@ export default function LogosShowcase() {
               <div>
                 <h2 className="text-4xl font-bold text-slate-900 mb-6">O Nas</h2>
                 <p className="text-slate-600 leading-relaxed mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  Jesteśmy firmą specjalizującą się w tworzeniu zaawansowanych rozwiązań IT.
+                  Od ponad 15 lat pomagamy firmom w transformacji cyfrowej i osiąganiu celów biznesowych
+                  poprzez innowacyjne technologie.
                 </p>
                 <p className="text-slate-600 leading-relaxed">
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                  fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                  Nasz zespół ekspertów łączy pasję do technologii z głębokim zrozumieniem potrzeb biznesowych.
+                  Realizujemy projekty od etapu planowania po wdrożenie i wsparcie.
                 </p>
               </div>
               <div className="space-y-6">
@@ -224,22 +219,22 @@ export default function LogosShowcase() {
                 {
                   title: 'Rozwój Oprogramowania',
                   description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    'Tworzymy dedykowane aplikacje webowe i mobilne dostosowane do unikalnych potrzeb Twojej firmy.',
                 },
                 {
                   title: 'Konsultacje IT',
                   description:
-                    'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                    'Doradztwo strategiczne w zakresie wyboru technologii i optymalizacji procesów IT.',
                 },
                 {
                   title: 'Infrastruktura Cloud',
                   description:
-                    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                    'Migracja do chmury i zarządzanie infrastrukturą cloudową dla maksymalnej wydajności.',
                 },
                 {
                   title: 'Bezpieczeństwo',
                   description:
-                    'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    'Kompleksowe rozwiązania zabezpieczeń IT chroniące Twoje dane i systemy przed zagrożeniami.',
                 },
               ].map((service, index) => (
                 <motion.div
@@ -267,8 +262,8 @@ export default function LogosShowcase() {
           >
             <h2 className="text-4xl font-bold mb-6">Skontaktuj się z nami</h2>
             <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Rozpocznij swoją podróż z
-              nami już dziś.
+              Gotowy na transformację cyfrową? Porozmawiajmy o Twoim projekcie i poznajmy możliwości
+              współpracy. Nasz zespół jest tutaj, aby pomóc.
             </p>
             <button className="px-8 py-4 bg-white text-slate-900 font-semibold hover:bg-slate-100 transition-colors">
               Skontaktuj się
