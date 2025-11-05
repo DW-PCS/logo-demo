@@ -1,95 +1,19 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
-import Logo1PulsingRings from '../components/logos/Logo1PulsingRings';
-import Logo2HeroLines from '../components/logos/Logo2HeroLines';
-import Logo3DiagonalSweep from '../components/logos/Logo3DiagonalSweep';
-import Logo4HexagonLines from '../components/logos/Logo4HexagonLines';
-import Logo5CyberLines from '../components/logos/Logo5CyberLines';
-
-const logos = [
-  { id: 1, name: 'Pierścienie', component: Logo1PulsingRings },
-  { id: 2, name: 'Linie werdykalne', component: Logo2HeroLines },
-  { id: 3, name: 'Przekątne Linie', component: Logo3DiagonalSweep },
-  { id: 4, name: 'Hexagon', component: Logo4HexagonLines },
-  { id: 5, name: 'Siatka', component: Logo5CyberLines },
-];
+import { motion } from 'framer-motion';
+import LogoHexagonFlow from '../components/logos/LogoHexagonFlow';
 
 export default function LogosShowcase() {
-  const [selectedLogo, setSelectedLogo] = useState(1);
-
-  const CurrentLogo = logos.find(logo => logo.id === selectedLogo)?.component || Logo1PulsingRings;
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Logo */}
       <section className="relative h-screen">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedLogo}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
-          >
-            <CurrentLogo />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Navigation Arrows */}
-        <button
-          onClick={() => setSelectedLogo(prev => (prev > 1 ? prev - 1 : logos.length))}
-          className="absolute left-8 top-1/2 -translate-y-1/2 z-50 p-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full transition-all group"
-          aria-label="Previous logo"
-        >
-          <svg
-            className="w-6 h-6 text-white group-hover:scale-110 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <button
-          onClick={() => setSelectedLogo(prev => (prev < logos.length ? prev + 1 : 1))}
-          className="absolute right-8 top-1/2 -translate-y-1/2 z-50 p-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full transition-all group"
-          aria-label="Next logo"
-        >
-          <svg
-            className="w-6 h-6 text-white group-hover:scale-110 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-
-        {/* Simple Logo Selector */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-50">
-          <div className="flex gap-3">
-            {logos.map(logo => (
-              <button
-                key={logo.id}
-                onClick={() => setSelectedLogo(logo.id)}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  selectedLogo === logo.id
-                    ? 'bg-white scale-125 shadow-lg'
-                    : 'bg-white/40 hover:bg-white/60'
-                }`}
-                aria-label={logo.name}
-              />
-            ))}
-          </div>
-        </div>
+        <LogoHexagonFlow />
 
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
