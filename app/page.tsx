@@ -6,30 +6,8 @@ import LogoDotsFlow from './components/logos/LogoDotsFlow';
 export default function LogosShowcase() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section with Logo */}
-      <section className="relative h-screen">
+      <section className="relative">
         <LogoDotsFlow />
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <svg
-            className="w-6 h-6 text-white/60"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
-        </motion.div>
       </section>
 
       {/* Content Section */}
@@ -43,11 +21,11 @@ export default function LogosShowcase() {
             className="text-center mb-20"
           >
             <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-6">
-              Innowacyjne Rozwiązania
+              Lorem Ipsum Dolor
             </h1>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Dostarczamy nowoczesne rozwiązania technologiczne, które przekształcają Twój biznes i
-              prowadzą do sukcesu w erze cyfrowej.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua.
             </p>
           </motion.div>
 
@@ -55,19 +33,19 @@ export default function LogosShowcase() {
           <div className="grid md:grid-cols-3 gap-12 mb-24">
             {[
               {
-                title: 'Technologia',
+                title: 'Lorem Ipsum',
                 description:
-                  'Wykorzystujemy najnowsze technologie i narzędzia, aby dostarczać rozwiązania na najwyższym poziomie.',
+                  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
               },
               {
-                title: 'Innowacja',
+                title: 'Dolor Sit',
                 description:
-                  'Ciągle poszukujemy nowych sposobów rozwiązywania problemów i ulepszania procesów biznesowych.',
+                  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
               },
               {
-                title: 'Jakość',
+                title: 'Amet Consectetur',
                 description:
-                  'Każdy projekt realizujemy z najwyższą starannością, dbając o każdy szczegół i satysfakcję klienta.',
+                  'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
               },
             ].map((feature, index) => (
               <motion.div
@@ -94,23 +72,23 @@ export default function LogosShowcase() {
           >
             <div className="grid md:grid-cols-2 gap-16 items-center">
               <div>
-                <h2 className="text-4xl font-bold text-slate-900 mb-6">O Nas</h2>
+                <h2 className="text-4xl font-bold text-slate-900 mb-6">About Us</h2>
                 <p className="text-slate-600 leading-relaxed mb-4">
-                  Jesteśmy firmą specjalizującą się w tworzeniu zaawansowanych rozwiązań IT. Od
-                  ponad 15 lat pomagamy firmom w transformacji cyfrowej i osiąganiu celów
-                  biznesowych poprzez innowacyjne technologie.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris.
                 </p>
                 <p className="text-slate-600 leading-relaxed">
-                  Nasz zespół ekspertów łączy pasję do technologii z głębokim zrozumieniem potrzeb
-                  biznesowych. Realizujemy projekty od etapu planowania po wdrożenie i wsparcie.
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                  fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
                 </p>
               </div>
               <div className="space-y-6">
                 {[
-                  { label: 'Doświadczenie', value: '15+ lat' },
-                  { label: 'Projekty', value: '500+' },
-                  { label: 'Klienci', value: '200+' },
-                  { label: 'Zespół', value: '50+ osób' },
+                  { label: 'Experience', value: '15+ years' },
+                  { label: 'Projects', value: '500+' },
+                  { label: 'Clients', value: '200+' },
+                  { label: 'Team', value: '50+ people' },
                 ].map((stat, index) => (
                   <motion.div
                     key={index}
@@ -136,28 +114,28 @@ export default function LogosShowcase() {
             viewport={{ once: true }}
             className="mb-24"
           >
-            <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Usługi</h2>
+            <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Services</h2>
             <div className="grid md:grid-cols-2 gap-8">
               {[
                 {
-                  title: 'Rozwój Oprogramowania',
+                  title: 'Software Development',
                   description:
-                    'Tworzymy dedykowane aplikacje webowe i mobilne dostosowane do unikalnych potrzeb Twojej firmy.',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
                 },
                 {
-                  title: 'Konsultacje IT',
+                  title: 'IT Consulting',
                   description:
-                    'Doradztwo strategiczne w zakresie wyboru technologii i optymalizacji procesów IT.',
+                    'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.',
                 },
                 {
-                  title: 'Infrastruktura Cloud',
+                  title: 'Cloud Infrastructure',
                   description:
-                    'Migracja do chmury i zarządzanie infrastrukturą cloudową dla maksymalnej wydajności.',
+                    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.',
                 },
                 {
-                  title: 'Bezpieczeństwo',
+                  title: 'Security',
                   description:
-                    'Kompleksowe rozwiązania zabezpieczeń IT chroniące Twoje dane i systemy przed zagrożeniami.',
+                    'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.',
                 },
               ].map((service, index) => (
                 <motion.div
@@ -183,13 +161,13 @@ export default function LogosShowcase() {
             viewport={{ once: true }}
             className="text-center py-16 bg-slate-900 text-white -mx-8 px-8"
           >
-            <h2 className="text-4xl font-bold mb-6">Skontaktuj się z nami</h2>
+            <h2 className="text-4xl font-bold mb-6">Get In Touch</h2>
             <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
-              Gotowy na transformację cyfrową? Porozmawiajmy o Twoim projekcie i poznajmy możliwości
-              współpracy. Nasz zespół jest tutaj, aby pomóc.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua.
             </p>
             <button className="px-8 py-4 bg-white text-slate-900 font-semibold hover:bg-slate-100 transition-colors">
-              Skontaktuj się
+              Contact Us
             </button>
           </motion.div>
         </div>
@@ -198,7 +176,7 @@ export default function LogosShowcase() {
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12 px-8">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-slate-400">© 2025 PCS. Wszelkie prawa zastrzeżone.</p>
+          <p className="text-slate-400">© 2025 PCS. All rights reserved.</p>
         </div>
       </footer>
     </div>

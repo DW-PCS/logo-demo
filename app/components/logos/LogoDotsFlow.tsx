@@ -7,22 +7,27 @@ export default function LogoDotsFlow() {
   const centerX = 520;
   const centerY = 300;
 
+  const dotMargin = 210;
   const dots = [
-    { x: 380, y: 170 },
-    { x: 700, y: 190 },
-    { x: 400, y: 410 },
-    { x: 700, y: 400 },
+    { x: dotMargin + 130, y: dotMargin },
+    { x: 1000 - dotMargin - 50, y: dotMargin },
+    { x: dotMargin + 170, y: 600 - dotMargin },
+    { x: 1000 - dotMargin - 100, y: 600 - dotMargin },
   ];
 
   return (
-    <div className="relative w-full h-screen bg-[#0a0a2e] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full aspect-video bg-[#0a0a2e] flex items-center justify-center overflow-hidden">
       {/* Background gradient circles */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-1/3 aspect-square bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-1/3 aspect-square bg-cyan-500/10 rounded-full blur-3xl" />
       </div>
 
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 600">
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 1000 600"
+        preserveAspectRatio="xMidYMid meet"
+      >
         {/* Lines from dots to center */}
         {dots.map((dot, index) => {
           const dx = centerX - dot.x;
@@ -34,25 +39,21 @@ export default function LogoDotsFlow() {
           let midX, midY, endX, endY;
 
           if (index === 0) {
-            // Top-left: shorter horizontal, end at left edge of logo
             midX = centerX - logoPaddingHorizontal;
             midY = dot.y;
             endX = midX;
             endY = centerY - logoPadding;
           } else if (index === 1) {
-            // Top-right: longer horizontal, end further from logo
             midX = dot.x - Math.abs(dx) * 0.75;
             midY = dot.y;
             endX = midX;
             endY = centerY - logoPadding;
           } else if (index === 2) {
-            // Bottom-left: shorter horizontal, end at left edge of logo
             midX = centerX - logoPaddingHorizontal;
             midY = dot.y;
             endX = midX;
             endY = centerY + logoPadding;
           } else {
-            // Bottom-right: longer horizontal, end further from logo
             midX = dot.x - Math.abs(dx) * 0.75;
             midY = dot.y;
             endX = midX;
@@ -128,7 +129,7 @@ export default function LogoDotsFlow() {
 
       {/* Central Logo */}
       <motion.div
-        className="relative z-10"
+        className="relative z-10 w-[30%] max-w-[400px] px-4"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
@@ -136,9 +137,9 @@ export default function LogoDotsFlow() {
         <Image
           src="/pcs-logo.png"
           alt="Polski PCS Logo"
-          width={300}
-          height={100}
-          className="object-contain"
+          width={500}
+          height={167}
+          className="object-contain w-full h-auto"
           priority
         />
       </motion.div>
