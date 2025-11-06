@@ -24,7 +24,7 @@ export default function LogoDotsFlow() {
       </div>
 
       <svg
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full md:w-[90%] md:h-[90%] lg:w-full lg:h-full md:mx-auto md:my-auto"
         viewBox="0 0 1000 600"
         preserveAspectRatio="xMidYMid meet"
       >
@@ -32,32 +32,33 @@ export default function LogoDotsFlow() {
         {dots.map((dot, index) => {
           const dx = centerX - dot.x;
 
-          const logoPadding = 80;
-          const logoPaddingHorizontal = 0;
+          const logoPadding = 50;
+          const logoPaddingHorizontal = -20;
+          const topDotsHorizontalOffset = -25;
           const cornerRadius = 5;
 
           let midX, midY, endX, endY;
 
           if (index === 0) {
-            midX = centerX - logoPaddingHorizontal;
+            endX = centerX - logoPaddingHorizontal + topDotsHorizontalOffset + 15;
+            endY = centerY - logoPadding + 6;
+            midX = endX;
             midY = dot.y;
-            endX = midX;
-            endY = centerY - logoPadding;
           } else if (index === 1) {
-            midX = dot.x - Math.abs(dx) * 0.75;
-            midY = dot.y;
-            endX = midX;
+            endX = dot.x - Math.abs(dx) * 0.75 + topDotsHorizontalOffset;
             endY = centerY - logoPadding;
+            midX = endX;
+            midY = dot.y;
           } else if (index === 2) {
-            midX = centerX - logoPaddingHorizontal;
-            midY = dot.y;
-            endX = midX;
+            endX = centerX - logoPaddingHorizontal;
             endY = centerY + logoPadding;
+            midX = endX;
+            midY = dot.y;
           } else {
-            midX = dot.x - Math.abs(dx) * 0.75;
-            midY = dot.y;
-            endX = midX;
+            endX = dot.x - Math.abs(dx) * 0.75;
             endY = centerY + logoPadding;
+            midX = endX;
+            midY = dot.y;
           }
 
           const pathData = `M ${dot.x} ${dot.y} L ${
@@ -81,7 +82,7 @@ export default function LogoDotsFlow() {
                 initial={{ strokeDashoffset: 0, opacity: 0 }}
                 animate={{
                   strokeDashoffset: -1050,
-                  opacity: [0, 1, 1]
+                  opacity: [0, 1, 1],
                 }}
                 transition={{
                   duration: 8,
@@ -133,7 +134,7 @@ export default function LogoDotsFlow() {
 
       {/* Central Logo */}
       <motion.div
-        className="relative z-10 w-[30%] max-w-[400px] px-4"
+        className="relative z-10 w-[29%] md:w-[35%] lg:w-[16%] max-w-[400px] px-4"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
