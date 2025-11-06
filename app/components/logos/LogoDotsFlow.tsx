@@ -4,134 +4,137 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
-export default function LogoDotsFlow() {
-  const logoRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [endPositions, setEndPositions] = useState([
-    { x: 530, y: 258 },
-    { x: 550, y: 250 },
-    { x: 540, y: 350 },
-    { x: 562.5, y: 350 },
-  ]);
+interface Position {
+  x: number;
+  y: number;
+}
 
-  const dots = [
-    { x: 340, y: 210 },
-    { x: 740, y: 210 },
-    { x: 380, y: 390 },
-    { x: 690, y: 390 },
+interface DotConfig {
+  angle: number;
+  distance: number;
+}
+
+export default function LogoDotsFlow() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 1000, height: 600 });
+  const [dotPositions, setDotPositions] = useState<Position[]>([]);
+  const [logoCorners, setLogoCorners] = useState<Position[]>([]);
+
+  const dotConfigs: DotConfig[] = [
+    { angle: 180, distance: 150 },
+    { angle: 0, distance: 150 },
+    { angle: 180, distance: 120 },
+    { angle: 0, distance: 120 },
   ];
 
   useEffect(() => {
-    const updateEndPositions = () => {
-      if (!logoRef.current || !svgRef.current) return;
+    const updatePositions = () => {
+      if (!containerRef.current || !logoRef.current) return;
 
+      const containerRect = containerRef.current.getBoundingClientRect();
       const logoRect = logoRef.current.getBoundingClientRect();
-      const svgRect = svgRef.current.getBoundingClientRect();
 
-      const viewBox = svgRef.current.viewBox.baseVal;
-      const viewBoxWidth = viewBox.width;
-      const viewBoxHeight = viewBox.height;
+      const isSmallScreen = window.innerWidth < 1200;
+      const scaleFactor = isSmallScreen ? 0.85 : 1;
 
-      const scaleX = viewBoxWidth / svgRect.width;
-      const scaleY = (viewBoxHeight - 20) / svgRect.height;
+      const viewBoxWidth = 1000;
+      const viewBoxHeight = 600;
 
-      const logoLeftInSVG = (logoRect.left + 120 - svgRect.left) * scaleX;
-      const logoRightInSVG = (logoRect.right - svgRect.left) * scaleX;
-      const logoTopInSVG = (logoRect.top - svgRect.top) * scaleY - 10;
-      const logoBottomInSVG = (logoRect.bottom - svgRect.top) * scaleY + 30;
+      setDimensions({ width: viewBoxWidth, height: viewBoxHeight });
 
-      const offset = 8;
+      const centerX = viewBoxWidth / 2;
+      const centerY = viewBoxHeight / 2;
 
-      setEndPositions([
-        { x: logoLeftInSVG + offset, y: logoTopInSVG + offset },
-        { x: logoRightInSVG - offset, y: logoTopInSVG - 3 },
-        { x: logoLeftInSVG + offset + 10, y: logoBottomInSVG - offset },
-        { x: logoRightInSVG - offset + 12.5, y: logoBottomInSVG - offset },
-      ]);
+      const scaleX = viewBoxWidth / containerRect.width;
+      const scaleY = viewBoxHeight / containerRect.height;
+      const logoWidthInViewBox = logoRect.width * scaleX * scaleFactor;
+      const logoHeightInViewBox = logoRect.height * scaleY * scaleFactor;
+
+      const corners: Position[] = [
+        { x: centerX / 0.79 - logoWidthInViewBox / 2, y: centerY - logoHeightInViewBox / 1.05 },
+        { x: centerX / 1.05 + logoWidthInViewBox / 2, y: centerY - logoHeightInViewBox / 1.18 },
+        { x: centerX / 0.85 - logoWidthInViewBox / 6, y: centerY + logoHeightInViewBox / 1 },
+        { x: centerX + logoWidthInViewBox / 2, y: centerY + logoHeightInViewBox / 2 },
+      ];
+      setLogoCorners(corners);
+
+      const dots: Position[] = dotConfigs.map((config, index) => {
+        const adjustedDistance = config.distance * scaleFactor;
+        const angleRad = (config.angle * Math.PI) / 180;
+        const corner = corners[index];
+
+        const verticalOffset = index < 2 ? -20 * scaleFactor : 40 * scaleFactor;
+
+        return {
+          x: corner.x + Math.cos(angleRad) * adjustedDistance,
+          y: corner.y + verticalOffset,
+        };
+      });
+
+      setDotPositions(dots);
     };
 
-    updateEndPositions();
-    window.addEventListener('resize', updateEndPositions);
+    updatePositions();
 
-    const timeout = setTimeout(updateEndPositions, 100);
+    const resizeObserver = new ResizeObserver(updatePositions);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    window.addEventListener('resize', updatePositions);
+    const timeout = setTimeout(updatePositions, 100);
 
     return () => {
-      window.removeEventListener('resize', updateEndPositions);
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updatePositions);
       clearTimeout(timeout);
     };
   }, []);
 
+  const generatePath = (start: Position, end: Position, index: number): string => {
+    const isLeft = index === 0 || index === 2;
+    const isTop = index < 2;
+    const offset = 5;
+
+    if (isTop) {
+      if (isLeft) {
+        return `M ${start.x} ${start.y} L ${end.x - offset} ${start.y} Q ${end.x} ${start.y} ${
+          end.x
+        } ${start.y + offset} L ${end.x} ${end.y}`;
+      } else {
+        return `M ${start.x} ${start.y} L ${end.x + offset} ${start.y} Q ${end.x} ${start.y} ${
+          end.x
+        } ${start.y + offset} L ${end.x} ${end.y}`;
+      }
+    } else {
+      if (isLeft) {
+        return `M ${start.x} ${start.y} L ${end.x - offset} ${start.y} Q ${end.x} ${start.y} ${
+          end.x
+        } ${start.y - offset} L ${end.x} ${end.y}`;
+      } else {
+        return `M ${start.x} ${start.y} L ${end.x + offset} ${start.y} Q ${end.x} ${start.y} ${
+          end.x
+        } ${start.y - offset} L ${end.x} ${end.y}`;
+      }
+    }
+  };
+
   return (
-    <div className="relative w-full aspect-video bg-[#0a0a2e] flex items-center justify-center overflow-hidden">
-      {/* Background gradient circles */}
-      <div className="absolute inset-0">
+    <div
+      ref={containerRef}
+      className="relative w-full aspect-video bg-[#0a0a2e] flex items-center justify-center overflow-hidden"
+    >
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-1/3 aspect-square bg-cyan-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-1/3 aspect-square bg-cyan-500/10 rounded-full blur-3xl" />
       </div>
 
       <svg
-        ref={svgRef}
-        className="absolute inset-0 w-full h-full md:w-[90%] md:h-[90%] lg:w-full lg:h-full md:mx-auto md:my-auto"
-        viewBox="0 0 1000 600"
+        className="absolute inset-0 w-full h-full"
+        viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Lines from dots to center */}
-        {dots.map((dot, index) => {
-          const endPos = endPositions[index];
-          let pathData;
-
-          if (index === 0) {
-            pathData = `M ${dot.x} ${dot.y} L ${endPos.x - 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
-              endPos.x
-            } ${dot.y + 5} L ${endPos.x} ${endPos.y}`;
-          } else if (index === 1) {
-            pathData = `M ${dot.x} ${dot.y} L ${endPos.x + 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
-              endPos.x
-            } ${dot.y + 5} L ${endPos.x} ${endPos.y}`;
-          } else if (index === 2) {
-            pathData = `M ${dot.x} ${dot.y} L ${endPos.x - 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
-              endPos.x
-            } ${dot.y - 5} L ${endPos.x} ${endPos.y}`;
-          } else {
-            pathData = `M ${dot.x} ${dot.y} L ${endPos.x + 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
-              endPos.x
-            } ${dot.y - 5} L ${endPos.x} ${endPos.y}`;
-          }
-
-          return (
-            <g key={index}>
-              {/* Static line (gray) */}
-              <path d={pathData} stroke="#4a5568" strokeWidth="1" fill="none" opacity="0.3" />
-
-              {/* Animated colored segment */}
-              <motion.path
-                d={pathData}
-                stroke="#00ffff"
-                strokeWidth="2"
-                fill="none"
-                strokeDasharray="50 1000"
-                initial={{ strokeDashoffset: 0, opacity: 0 }}
-                animate={{
-                  strokeDashoffset: -1050,
-                  opacity: [0, 1, 1],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: 'linear',
-                  delay: index * 1.95,
-                  times: [0, 0.01, 1],
-                }}
-                filter="url(#glow)"
-              />
-
-              {/* End dot near logo */}
-              <circle cx={endPos.x} cy={endPos.y} r="2" fill="#4a5568" opacity="0.6" />
-            </g>
-          );
-        })}
-
-        {/* Glow filter for the traveling segments */}
         <defs>
           <filter id="glow">
             <feGaussianBlur stdDeviation="2" result="coloredBlur" />
@@ -142,8 +145,43 @@ export default function LogoDotsFlow() {
           </filter>
         </defs>
 
-        {/* Dots */}
-        {dots.map((dot, index) => (
+        {dotPositions.length > 0 &&
+          logoCorners.length > 0 &&
+          dotPositions.map((dot, index) => {
+            const corner = logoCorners[index];
+            const pathData = generatePath(dot, corner, index);
+
+            return (
+              <g key={`line-${index}`}>
+                <path d={pathData} stroke="#4a5568" strokeWidth="1" fill="none" opacity="0.3" />
+
+                <motion.path
+                  d={pathData}
+                  stroke="#00ffff"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeDasharray="50 1000"
+                  initial={{ strokeDashoffset: 0, opacity: 0 }}
+                  animate={{
+                    strokeDashoffset: -1050,
+                    opacity: [0, 1, 1],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: 'linear',
+                    delay: index * 1.95,
+                    times: [0, 0.01, 1],
+                  }}
+                  filter="url(#glow)"
+                />
+
+                <circle cx={corner.x} cy={corner.y} r="2" fill="#4a5568" opacity="0.6" />
+              </g>
+            );
+          })}
+
+        {dotPositions.map((dot, index) => (
           <motion.circle
             key={`dot-${index}`}
             cx={dot.x}
@@ -163,10 +201,9 @@ export default function LogoDotsFlow() {
         ))}
       </svg>
 
-      {/* Central Logo */}
       <motion.div
         ref={logoRef}
-        className="relative z-10 w-[22%] max-w-[400px] px-4"
+        className="relative z-10 w-[22%] max-w-[400px] min-w-[180px] px-4 max-lg:w-[30%] max-md:w-[40%]"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
