@@ -20,6 +20,8 @@ export default function LogoDotsFlow() {
   const [dimensions, setDimensions] = useState({ width: 1000, height: 600 });
   const [dotPositions, setDotPositions] = useState<Position[]>([]);
   const [logoCorners, setLogoCorners] = useState<Position[]>([]);
+  const [logoCenter, setLogoCenter] = useState<Position>({ x: 500, y: 300 });
+  const [logoRadius, setLogoRadius] = useState<number>(120);
 
   const dotConfigs: DotConfig[] = [
     { angle: 180, distance: 150 },
@@ -51,6 +53,10 @@ export default function LogoDotsFlow() {
       const logoWidthInViewBox = logoRect.width * scaleX * scaleFactor;
       const logoHeightInViewBox = logoRect.height * scaleY * scaleFactor;
 
+      const center = { x: centerX, y: centerY };
+      setLogoCenter(center);
+      setLogoRadius(Math.max(logoWidthInViewBox + 20, logoHeightInViewBox) / 2 + 174);
+
       const corners: Position[] = [
         { x: centerX / 0.79 - logoWidthInViewBox / 2, y: centerY - logoHeightInViewBox / 1.05 },
         { x: centerX / 1.05 + logoWidthInViewBox / 2, y: centerY - logoHeightInViewBox / 1.18 },
@@ -63,9 +69,7 @@ export default function LogoDotsFlow() {
         const adjustedDistance = config.distance * scaleFactor;
         const angleRad = (config.angle * Math.PI) / 180;
         const corner = corners[index];
-
         const verticalOffset = index < 2 ? -20 * scaleFactor : 40 * scaleFactor;
-
         return {
           x: corner.x + Math.cos(angleRad) * adjustedDistance,
           y: corner.y + verticalOffset,
@@ -76,12 +80,8 @@ export default function LogoDotsFlow() {
     };
 
     updatePositions();
-
     const resizeObserver = new ResizeObserver(updatePositions);
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
+    if (containerRef.current) resizeObserver.observe(containerRef.current);
     window.addEventListener('resize', updatePositions);
     const timeout = setTimeout(updatePositions, 100);
 
@@ -125,6 +125,7 @@ export default function LogoDotsFlow() {
       ref={containerRef}
       className="relative w-full aspect-video bg-[#0a0a2e] flex items-center justify-center overflow-hidden"
     >
+      {/* background glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-1/3 aspect-square bg-cyan-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-1/3 aspect-square bg-cyan-500/10 rounded-full blur-3xl" />
@@ -145,16 +146,61 @@ export default function LogoDotsFlow() {
           </filter>
         </defs>
 
+        {/* --- Animated circular ring around logo --- */}
+        <motion.circle
+          cx={logoCenter.x + 40}
+          cy={logoCenter.y}
+          r={logoRadius}
+          stroke="#00ffff"
+          strokeWidth="15"
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray="300 800"
+          initial={{ rotate: 0, opacity: 0 }}
+          animate={{
+            rotate: 360,
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            rotate: { duration: 12, repeat: Infinity, ease: 'linear' },
+            opacity: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
+          }}
+          style={{ transformOrigin: `${logoCenter.x}px ${logoCenter.y}px` }}
+          filter="url(#glow)"
+        />
+
+        {/* --- Second closer circle --- */}
+        <motion.circle
+          cx={logoCenter.x + 40}
+          cy={logoCenter.y}
+          r={logoRadius * 0.7} // smaller radius for closer ring
+          stroke="#00ffff"
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray="200 600"
+          initial={{ rotate: 0, opacity: 0 }}
+          animate={{
+            rotate: -360, // opposite direction for visual contrast
+            opacity: [0, 0.9, 0],
+          }}
+          transition={{
+            rotate: { duration: 10, repeat: Infinity, ease: 'linear' },
+            opacity: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
+          }}
+          style={{ transformOrigin: `${logoCenter.x}px ${logoCenter.y}px` }}
+          filter="url(#glow)"
+        />
+
+        {/* animated connection paths */}
         {dotPositions.length > 0 &&
           logoCorners.length > 0 &&
           dotPositions.map((dot, index) => {
             const corner = logoCorners[index];
             const pathData = generatePath(dot, corner, index);
-
             return (
               <g key={`line-${index}`}>
                 <path d={pathData} stroke="#4a5568" strokeWidth="1" fill="none" opacity="0.3" />
-
                 <motion.path
                   d={pathData}
                   stroke="#00ffff"
@@ -175,7 +221,6 @@ export default function LogoDotsFlow() {
                   }}
                   filter="url(#glow)"
                 />
-
                 <circle
                   cx={corner.x}
                   cy={corner.y + (index === 0 ? 20.25 : 0)}
@@ -187,6 +232,7 @@ export default function LogoDotsFlow() {
             );
           })}
 
+        {/* dots */}
         {dotPositions.map((dot, index) => (
           <motion.circle
             key={`dot-${index}`}
@@ -195,18 +241,13 @@ export default function LogoDotsFlow() {
             r="15"
             fill="#d1d5db"
             initial={{ scale: 1 }}
-            animate={{
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: index * 0.5,
-            }}
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
           />
         ))}
       </svg>
 
+      {/* logo */}
       <motion.div
         ref={logoRef}
         className="relative z-10 w-[22%] max-w-[400px] min-w-[180px] px-4 max-lg:w-[30%] max-md:w-[40%]"
