@@ -101,7 +101,7 @@ export default function LogoDotsFlow() {
       if (isLeft) {
         return `M ${start.x} ${start.y} L ${end.x - offset} ${start.y} Q ${end.x} ${start.y} ${
           end.x
-        } ${start.y + offset} L ${end.x} ${end.y}`;
+        } ${start.y + offset} L ${end.x} ${end.y + 20.25}`;
       } else {
         return `M ${start.x} ${start.y} L ${end.x + offset} ${start.y} Q ${end.x} ${start.y} ${
           end.x
@@ -176,7 +176,13 @@ export default function LogoDotsFlow() {
                   filter="url(#glow)"
                 />
 
-                <circle cx={corner.x} cy={corner.y} r="2" fill="#4a5568" opacity="0.6" />
+                <circle
+                  cx={corner.x}
+                  cy={corner.y + (index === 0 ? 20.25 : 0)}
+                  r="2"
+                  fill="#4a5568"
+                  opacity="0.6"
+                />
               </g>
             );
           })}
