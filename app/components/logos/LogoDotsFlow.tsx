@@ -8,10 +8,10 @@ export default function LogoDotsFlow() {
   const centerY = 300;
 
   const dots = [
-    { x: 250, y: 150 },
-    { x: 750, y: 150 },
-    { x: 250, y: 450 },
-    { x: 750, y: 450 },
+    { x: 380, y: 170 },
+    { x: 700, y: 190 },
+    { x: 400, y: 410 },
+    { x: 700, y: 400 },
   ];
 
   return (
@@ -29,7 +29,7 @@ export default function LogoDotsFlow() {
 
           const logoPadding = 80;
           const logoPaddingHorizontal = 0;
-          const cornerRadius = 30;
+          const cornerRadius = 5;
 
           let midX, midY, endX, endY;
 
