@@ -78,13 +78,17 @@ export default function LogoDotsFlow() {
                 strokeWidth="2"
                 fill="none"
                 strokeDasharray="50 1000"
-                initial={{ strokeDashoffset: 0 }}
-                animate={{ strokeDashoffset: -1050 }}
+                initial={{ strokeDashoffset: 0, opacity: 0 }}
+                animate={{
+                  strokeDashoffset: -1050,
+                  opacity: [0, 1, 1]
+                }}
                 transition={{
                   duration: 8,
                   repeat: Infinity,
                   ease: 'linear',
                   delay: index * 1.95,
+                  times: [0, 0.01, 1],
                 }}
                 filter="url(#glow)"
               />
