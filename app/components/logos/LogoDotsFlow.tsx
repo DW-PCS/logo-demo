@@ -2,18 +2,64 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
 export default function LogoDotsFlow() {
-  const centerX = 520;
-  const centerY = 300;
+  const logoRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [endPositions, setEndPositions] = useState([
+    { x: 530, y: 258 },
+    { x: 550, y: 250 },
+    { x: 540, y: 350 },
+    { x: 562.5, y: 350 },
+  ]);
 
-  const dotMargin = 210;
   const dots = [
-    { x: dotMargin + 130, y: dotMargin },
-    { x: 1000 - dotMargin - 50, y: dotMargin },
-    { x: dotMargin + 170, y: 600 - dotMargin },
-    { x: 1000 - dotMargin - 100, y: 600 - dotMargin },
+    { x: 340, y: 210 },
+    { x: 740, y: 210 },
+    { x: 380, y: 390 },
+    { x: 690, y: 390 },
   ];
+
+  useEffect(() => {
+    const updateEndPositions = () => {
+      if (!logoRef.current || !svgRef.current) return;
+
+      const logoRect = logoRef.current.getBoundingClientRect();
+      const svgRect = svgRef.current.getBoundingClientRect();
+
+      const viewBox = svgRef.current.viewBox.baseVal;
+      const viewBoxWidth = viewBox.width;
+      const viewBoxHeight = viewBox.height;
+
+      const scaleX = viewBoxWidth / svgRect.width;
+      const scaleY = (viewBoxHeight - 20) / svgRect.height;
+
+      const logoLeftInSVG = (logoRect.left + 120 - svgRect.left) * scaleX;
+      const logoRightInSVG = (logoRect.right - svgRect.left) * scaleX;
+      const logoTopInSVG = (logoRect.top - svgRect.top) * scaleY - 10;
+      const logoBottomInSVG = (logoRect.bottom - svgRect.top) * scaleY + 30;
+
+      const offset = 8;
+
+      setEndPositions([
+        { x: logoLeftInSVG + offset, y: logoTopInSVG + offset },
+        { x: logoRightInSVG - offset, y: logoTopInSVG - 3 },
+        { x: logoLeftInSVG + offset + 10, y: logoBottomInSVG - offset },
+        { x: logoRightInSVG - offset + 12.5, y: logoBottomInSVG - offset },
+      ]);
+    };
+
+    updateEndPositions();
+    window.addEventListener('resize', updateEndPositions);
+
+    const timeout = setTimeout(updateEndPositions, 100);
+
+    return () => {
+      window.removeEventListener('resize', updateEndPositions);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <div className="relative w-full aspect-video bg-[#0a0a2e] flex items-center justify-center overflow-hidden">
@@ -24,48 +70,33 @@ export default function LogoDotsFlow() {
       </div>
 
       <svg
+        ref={svgRef}
         className="absolute inset-0 w-full h-full md:w-[90%] md:h-[90%] lg:w-full lg:h-full md:mx-auto md:my-auto"
         viewBox="0 0 1000 600"
         preserveAspectRatio="xMidYMid meet"
       >
         {/* Lines from dots to center */}
         {dots.map((dot, index) => {
-          const dx = centerX - dot.x;
-
-          const logoPadding = 50;
-          const logoPaddingHorizontal = -20;
-          const topDotsHorizontalOffset = -25;
-          const cornerRadius = 5;
-
-          let midX, midY, endX, endY;
+          const endPos = endPositions[index];
+          let pathData;
 
           if (index === 0) {
-            endX = centerX - logoPaddingHorizontal + topDotsHorizontalOffset + 15;
-            endY = centerY - logoPadding + 6;
-            midX = endX;
-            midY = dot.y;
+            pathData = `M ${dot.x} ${dot.y} L ${endPos.x - 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
+              endPos.x
+            } ${dot.y + 5} L ${endPos.x} ${endPos.y}`;
           } else if (index === 1) {
-            endX = dot.x - Math.abs(dx) * 0.75 + topDotsHorizontalOffset;
-            endY = centerY - logoPadding;
-            midX = endX;
-            midY = dot.y;
+            pathData = `M ${dot.x} ${dot.y} L ${endPos.x + 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
+              endPos.x
+            } ${dot.y + 5} L ${endPos.x} ${endPos.y}`;
           } else if (index === 2) {
-            endX = centerX - logoPaddingHorizontal;
-            endY = centerY + logoPadding;
-            midX = endX;
-            midY = dot.y;
+            pathData = `M ${dot.x} ${dot.y} L ${endPos.x - 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
+              endPos.x
+            } ${dot.y - 5} L ${endPos.x} ${endPos.y}`;
           } else {
-            endX = dot.x - Math.abs(dx) * 0.75;
-            endY = centerY + logoPadding;
-            midX = endX;
-            midY = dot.y;
+            pathData = `M ${dot.x} ${dot.y} L ${endPos.x + 5} ${dot.y} Q ${endPos.x} ${dot.y} ${
+              endPos.x
+            } ${dot.y - 5} L ${endPos.x} ${endPos.y}`;
           }
-
-          const pathData = `M ${dot.x} ${dot.y} L ${
-            midX - (index === 0 || index === 2 ? cornerRadius : -cornerRadius)
-          } ${midY} Q ${midX} ${midY} ${midX} ${
-            midY + (index < 2 ? cornerRadius : -cornerRadius)
-          } L ${endX} ${endY}`;
 
           return (
             <g key={index}>
@@ -95,7 +126,7 @@ export default function LogoDotsFlow() {
               />
 
               {/* End dot near logo */}
-              <circle cx={endX} cy={endY} r="2" fill="#4a5568" opacity="0.6" />
+              <circle cx={endPos.x} cy={endPos.y} r="2" fill="#4a5568" opacity="0.6" />
             </g>
           );
         })}
@@ -134,7 +165,8 @@ export default function LogoDotsFlow() {
 
       {/* Central Logo */}
       <motion.div
-        className="relative z-10 w-[29%] md:w-[35%] lg:w-[16%] max-w-[400px] px-4"
+        ref={logoRef}
+        className="relative z-10 w-[22%] max-w-[400px] px-4"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
